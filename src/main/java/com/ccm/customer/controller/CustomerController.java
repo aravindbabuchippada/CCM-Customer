@@ -1,5 +1,6 @@
 package com.ccm.customer.controller;
 
+import com.ccm.customer.kafka.CustomerFeedbackProducerService;
 import com.ccm.customer.pojos.CustomerClientMapPojo;
 import com.ccm.customer.pojos.CustomerPojo;
 import com.ccm.customer.responsepojos.CustomerMappedClient;
@@ -17,9 +18,12 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final CustomerFeedbackProducerService cfpService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService,
+                              CustomerFeedbackProducerService cfpService) {
         this.customerService = customerService;
+        this.cfpService = cfpService;
     }
 
     @GetMapping("check")
@@ -45,5 +49,11 @@ public class CustomerController {
     @GetMapping("getCustomerClientMap")
     public ResponseEntity<CustomerMappedClient> getCustomerClientMap (@RequestParam("customerClientMapId") Integer customerClientMapId) {
         return new ResponseEntity(customerService.getCustomerClientMap(customerClientMapId), HttpStatus.OK);
+    }
+
+    @GetMapping("sendFeedbackToClient")
+    public ResponseEntity<String> sendFeedbackToClient(@RequestParam("feedbackMessage") String feedbackMessage) {
+        cfpService.sendFeedback(feedbackMessage);
+        return new ResponseEntity<>("Feedback sent successfully to Kafka topic!", HttpStatus.OK);
     }
 }

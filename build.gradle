@@ -39,6 +39,8 @@ dependencies {
 	implementation files('ccmCommonJar/ccmCommon.jar') // LOCAL
 	implementation name: 'ccmCommon', ext: 'jar'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.kafka:spring-kafka-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
